@@ -28,13 +28,9 @@ def enrollment_numbers(input_json_path, output_file_path):
         main_output_list = []
         for student in main_input_dict.values():
             for course in student["registered_courses"]:
-                if(course in main_output_list):
-                    continue
-                else:
-                    main_output_list.append(course)
+                main_output_list.append(course) if course not in main_output_list else  main_output_list
         main_output_list.sort()
     with open(output_file_path, 'w') as file:
-        print(main_output_list)
         for course in main_output_list:
             file.write('"' + course + '" ' +  str(len(names_of_registered_students(input_json_path, course))) + "\n")
 
@@ -61,7 +57,6 @@ def courses_for_lecturers(json_directory_path, output_json_path):
                     for lecturer in lecturers:
                         output_dict.setdefault(lecturer, [])
                         course_name = course_dict["course_name"]
-                        output_dict[lecturer].append(course_name) if course_name\
-                             not in output_dict[lecturer] else output_dict[lecturer]
+                        output_dict[lecturer].append(course_name) if course_name not in output_dict[lecturer] else output_dict[lecturer]
     with open(output_json_path, 'w') as file:
         json.dump(output_dict, file, indent=4)
